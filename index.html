@@ -79,7 +79,26 @@
             will-change: transform;
             transition: opacity 0.3s ease;
         }
-html {
+
+        /* Elastic Fluid Pull-and-Stretch Styles */
+        #fluid-page-container {
+            will-change: transform;
+            transform-origin: 50% 0;
+        }
+        #main-header {
+            will-change: transform;
+        }
+        body.is-fluid-pulling {
+            cursor: grabbing !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+        }
+        body.is-fluid-pulling * {
+            user-select: none !important;
+            -webkit-user-select: none !important;
+        }
+
+        html {
             scroll-behavior: smooth;
             overflow-x: hidden;
             max-width: 100%;
@@ -470,7 +489,7 @@ html {
 
 
 
-    <header class="w-full max-w-6xl mx-auto bg-white/80 backdrop-blur-3xl border border-white rounded-full px-8 h-20 flex items-center justify-between shadow-xl shadow-slate-200/20 sticky top-4 z-50">
+    <header id="main-header" class="w-full max-w-6xl mx-auto bg-white/80 backdrop-blur-3xl border border-white rounded-full px-8 h-20 flex items-center justify-between shadow-xl shadow-slate-200/20 sticky top-4 z-50">
         <a href="#" class="text-xl font-extrabold tracking-tight text-slate-900">Yash Awachar</a>
         <nav class="hidden md:flex items-center text-xs font-bold uppercase tracking-wider text-slate-500" style="display: flex; align-items: center; gap: 1.25rem;">
             <a href="#" class="text-slate-900 transition hover:text-slate-950">Home</a>
@@ -525,7 +544,7 @@ html {
         </div>
     </nav>
 
-    <div class="w-full max-w-6xl mx-auto space-y-12 mt-6 relative z-10">
+    <div id="fluid-page-container" class="w-full max-w-6xl mx-auto space-y-12 mt-6 relative z-10">
 
         <section id="home" class="w-full bg-white border border-white/80 rounded-[2.5rem] shadow-2xl shadow-slate-300/60 overflow-hidden flex flex-col justify-between relative liquid-card">
             <div class="px-8 md:px-14 flex flex-col md:flex-row items-center justify-between gap-10 pt-14 pb-20 relative z-10">
@@ -1125,7 +1144,7 @@ html {
                                 Co-Developed with AI
                             </span>
                             <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider badge-cloud">
-                                Live on GCP Cloud Run
+                                Live on Cloudflare Pages
                             </span>
                         </div>
 
@@ -1147,12 +1166,12 @@ html {
                             <div><span class="text-base font-black text-slate-950 block">57+ Shifts</span><p class="text-[8px] uppercase tracking-wider text-slate-400 font-bold">Paper Vault</p></div>
                             <div><span class="text-base font-black text-slate-950 block">1:1 NTA</span><p class="text-[8px] uppercase tracking-wider text-slate-400 font-bold">CBT Simulator</p></div>
                             <div><span class="text-base font-black text-slate-950 block">KaTeX</span><p class="text-[8px] uppercase tracking-wider text-slate-400 font-bold">LaTeX &amp; NATs</p></div>
-                            <div><span class="text-base font-black text-slate-950 block">Cloud Run</span><p class="text-[8px] uppercase tracking-wider text-slate-400 font-bold">Autoscaling</p></div>
+                            <div><span class="text-base font-black text-slate-950 block">Cloudflare</span><p class="text-[8px] uppercase tracking-wider text-slate-400 font-bold">Edge Network</p></div>
                         </div>
 
                         <!-- Action Buttons -->
                         <div class="flex flex-wrap items-center gap-3 pt-1">
-                            <a href="https://jeemocklab-566080205337.asia-south1.run.app/" target="_blank" class="px-5 py-2.5 btn-primary-indigo font-extrabold text-xs tracking-wider uppercase rounded-xl transition flex items-center gap-1.5">
+                            <a href="https://jee-mock-lab.pages.dev/#home" target="_blank" class="px-5 py-2.5 btn-primary-indigo font-extrabold text-xs tracking-wider uppercase rounded-xl transition flex items-center gap-1.5">
                                 <span>Launch Simulator</span>
                                 <span>↗</span>
                             </a>
@@ -1175,14 +1194,14 @@ html {
                                 </div>
                                 <div class="bg-white border border-slate-200/60 rounded-full px-2.5 py-0.5 text-[9px] font-mono text-slate-400 tracking-wider flex items-center gap-1">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                    <span>jeemocklab.app</span>
+                                    <span>jee-mock-lab.pages.dev</span>
                                 </div>
                                 <div class="w-5"></div>
                             </div>
                             <!-- Image Container -->
                             <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
                                 <img src="./jeemocklab.png" alt="JEE MockLab Production Platform" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover/preview:scale-105">
-                                <a href="https://jeemocklab-566080205337.asia-south1.run.app/" target="_blank" class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover/preview:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-xs font-extrabold tracking-wider uppercase gap-2 backdrop-blur-xs">
+                                <a href="https://jee-mock-lab.pages.dev/#home" target="_blank" class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover/preview:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-xs font-extrabold tracking-wider uppercase gap-2 backdrop-blur-xs">
                                     <span>Launch Live App ↗</span>
                                 </a>
                             </div>
@@ -1615,9 +1634,8 @@ html {
             return;
         }
 
-        // -------------------------------------------------------------
-        // LAYER 1: HARDWARE-ACCELERATED LIQUID FLUID CANVAS SIMULATION
-        // -------------------------------------------------------------
+        const container = document.getElementById('fluid-page-container');
+        const header = document.getElementById('main-header');
         const canvas = document.getElementById('liquid-physics-canvas');
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
@@ -1647,11 +1665,10 @@ html {
             { rx: 0.88, ry: 0.90, baseR: 280, x: 0, y: 0, vx: 0, vy: 0, c1: '#FF769F', c2: 'rgba(243,168,205,0)', freq: 0.7 }
         ];
 
-        // Physics State
+        // Scroll Velocity State
         let lastScrollY = window.scrollY;
         let scrollVelocity = 0;
         let smoothedVelocity = 0;
-        let scrollDirection = 0;
         let lastScrollTime = performance.now();
 
         window.addEventListener('scroll', () => {
@@ -1663,44 +1680,210 @@ html {
             const deltaY = currentY - lastScrollY;
             lastScrollY = currentY;
 
-            // Velocity with direction
-            scrollVelocity = (deltaY / dt) * 18;
-            scrollDirection = Math.sign(deltaY);
+            scrollVelocity = (deltaY / dt) * 16;
         }, { passive: true });
 
         // -------------------------------------------------------------
-        // LAYER 2: LIQUID INERTIA FOR BACKGROUND PARTICLES & CONTENT CARDS
+        // ELASTIC FLUID PULL & STRETCH INTERACTION ENGINE
         // -------------------------------------------------------------
-        const particleNodes = Array.from(document.querySelectorAll('.liquid-particle'));
-        const cardNodes = Array.from(document.querySelectorAll('.liquid-card'));
+        let pullY = 0;
+        let pullVelocity = 0;
+        let isPointerDown = false;
+        let startPointerY = 0;
+        let currentPointerY = 0;
+        let isDraggingPull = false;
+        let dragVelocity = 0;
+        let lastDragY = 0;
+        let lastDragTime = performance.now();
 
+        function isInteractive(el) {
+            if (!el) return false;
+            return !!el.closest('a, button, input, textarea, select, #section-nav, .nav-dot-row, label, [role="button"]');
+        }
+
+        // 1. Mouse Drag Pulling (Desktop)
+        window.addEventListener('mousedown', (e) => {
+            if (e.button !== 0) return;
+            if (isInteractive(e.target)) return;
+
+            isPointerDown = true;
+            startPointerY = e.clientY;
+            currentPointerY = e.clientY;
+            lastDragY = e.clientY;
+            lastDragTime = performance.now();
+            dragVelocity = 0;
+            isDraggingPull = false;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isPointerDown) return;
+            currentPointerY = e.clientY;
+            const dy = currentPointerY - startPointerY;
+
+            if (!isDraggingPull && Math.abs(dy) > 5) {
+                isDraggingPull = true;
+                document.body.classList.add('is-fluid-pulling');
+            }
+
+            if (isDraggingPull) {
+                const now = performance.now();
+                const dt = Math.max(now - lastDragTime, 10);
+                dragVelocity = ((currentPointerY - lastDragY) / dt) * 16;
+                lastDragY = currentPointerY;
+                lastDragTime = now;
+            }
+        });
+
+        function endPointerDrag() {
+            if (isPointerDown) {
+                isPointerDown = false;
+                if (isDraggingPull) {
+                    isDraggingPull = false;
+                    document.body.classList.remove('is-fluid-pulling');
+                    pullVelocity += dragVelocity * 0.45;
+                }
+            }
+        }
+
+        window.addEventListener('mouseup', endPointerDrag);
+        window.addEventListener('mouseleave', endPointerDrag);
+
+        // 2. Touch Drag Pulling (Mobile / Tablet)
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches.length !== 1) return;
+            if (isInteractive(e.target)) return;
+            const touch = e.touches[0];
+            isPointerDown = true;
+            startPointerY = touch.clientY;
+            currentPointerY = touch.clientY;
+            lastDragY = touch.clientY;
+            lastDragTime = performance.now();
+            dragVelocity = 0;
+            isDraggingPull = false;
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isPointerDown || e.touches.length !== 1) return;
+            const touch = e.touches[0];
+            currentPointerY = touch.clientY;
+            const dy = currentPointerY - startPointerY;
+
+            const atTop = window.scrollY <= 1 && dy > 0;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const atBottom = window.scrollY >= maxScroll - 2 && dy < 0;
+
+            if (atTop || atBottom || Math.abs(dy) > 8) {
+                isDraggingPull = true;
+                const now = performance.now();
+                const dt = Math.max(now - lastDragTime, 10);
+                dragVelocity = ((currentPointerY - lastDragY) / dt) * 16;
+                lastDragY = currentPointerY;
+                lastDragTime = now;
+                if ((atTop || atBottom) && e.cancelable) {
+                    e.preventDefault();
+                }
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchend', endPointerDrag, { passive: true });
+        window.addEventListener('touchcancel', endPointerDrag, { passive: true });
+
+        // 3. Wheel / Trackpad Overscroll Pulling (Edges)
+        window.addEventListener('wheel', (e) => {
+            const isAtTop = window.scrollY <= 1;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const isAtBottom = window.scrollY >= maxScroll - 2;
+
+            if (isAtTop && e.deltaY < 0) {
+                e.preventDefault();
+                pullVelocity += -e.deltaY * 0.16;
+            } else if (isAtBottom && e.deltaY > 0) {
+                e.preventDefault();
+                pullVelocity += -e.deltaY * 0.16;
+            } else if (Math.abs(pullY) > 4) {
+                pullVelocity += -e.deltaY * 0.08;
+            }
+        }, { passive: false });
+
+        // Background Particles
+        const particleNodes = Array.from(document.querySelectorAll('.liquid-particle'));
         let time = 0;
 
         function renderFrame() {
             time += 0.016;
 
-            // Fluid viscous drag & decay
+            // Scroll velocity damping
             scrollVelocity *= 0.88;
             smoothedVelocity += (scrollVelocity - smoothedVelocity) * 0.16;
-
-            // Clamp velocity for physics stability
             const clampedVel = Math.max(Math.min(smoothedVelocity, 45), -45);
 
-            // A) Draw Liquid Canvas Waves
+            // Elastic Pull & Stretch Physics Solver
+            if (isDraggingPull) {
+                const rawDy = currentPointerY - startPointerY;
+                const sign = Math.sign(rawDy);
+                const absDist = Math.abs(rawDy);
+                // Asymptotic rubber-band resistance curve
+                const maxPull = 190;
+                const targetPullY = sign * (maxPull * (1 - Math.exp(-absDist / 380)));
+                // Viscous follow
+                pullY += (targetPullY - pullY) * 0.32;
+            } else {
+                // Damped harmonic oscillator (spring back with organic jelly rebound)
+                const stiffness = 0.085;
+                const damping = 0.80;
+                const force = -stiffness * pullY;
+                pullVelocity = (pullVelocity + force) * damping;
+                pullY += pullVelocity;
+
+                if (Math.abs(pullY) < 0.04 && Math.abs(pullVelocity) < 0.04) {
+                    pullY = 0;
+                    pullVelocity = 0;
+                }
+            }
+
+            // A) Apply Elastic Pull & Stretch Transform to DOM
+            if (container) {
+                if (Math.abs(pullY) > 0.05) {
+                    const absPull = Math.abs(pullY);
+                    // Proportional stretch along pull direction (up to 16% extension)
+                    const stretchRatio = Math.min(absPull * 0.0012, 0.16);
+                    const scaleY = 1 + stretchRatio;
+                    // Volume preservation (Poisson's effect: subtle horizontal contraction)
+                    const scaleX = 1 / Math.sqrt(scaleY);
+
+                    // Dynamic transform anchor:
+                    // Pulling DOWN (pullY > 0) -> stretch anchored at top of current viewport
+                    // Pulling UP (pullY < 0) -> stretch anchored at bottom of current viewport
+                    const originY = pullY > 0 ? window.scrollY : (window.scrollY + window.innerHeight);
+                    container.style.transformOrigin = `50% ${originY.toFixed(1)}px`;
+                    container.style.transform = `translate3d(0, ${pullY.toFixed(2)}px, 0) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
+                } else {
+                    container.style.transform = '';
+                    container.style.transformOrigin = '';
+                }
+            }
+
+            if (header) {
+                if (Math.abs(pullY) > 0.05) {
+                    header.style.transform = `translate3d(0, ${(pullY * 0.35).toFixed(2)}px, 0)`;
+                } else {
+                    header.style.transform = '';
+                }
+            }
+
+            // B) Render Liquid Canvas Waves & Physics Reaction
             ctx.clearRect(0, 0, width, height);
 
             fluids.forEach((f, idx) => {
-                // Organic floating liquid drift
                 const waveX = Math.sin(time * f.freq + idx * 1.5) * 35;
                 const waveY = Math.cos(time * (f.freq * 0.85) + idx * 2.0) * 35;
 
-                // Physics target: displaced by liquid surge from scrolling
+                // Physics target reacts to both scroll velocity and elastic pull displacement
                 const targetX = f.rx * width + waveX;
-                const targetY = f.ry * height + waveY - (clampedVel * (1.8 + idx * 0.35));
+                const targetY = f.ry * height + waveY - (clampedVel * (1.8 + idx * 0.35)) + (pullY * (1.2 + idx * 0.22));
 
-                // Spring physics (Hooke's law with viscous damping)
-                const k = 0.045; // spring constant
-                const d = 0.82;  // damping
+                const k = 0.045;
+                const d = 0.82;
                 const fx = (targetX - f.x) * k;
                 const fy = (targetY - f.y) * k;
 
@@ -1710,8 +1893,9 @@ html {
                 f.x += f.vx;
                 f.y += f.vy;
 
-                // Breathing pulse + squish during high scroll velocity
-                const squishY = 1 + (Math.abs(clampedVel) * 0.015);
+                // Deform liquid drops during scroll surge and elastic pull
+                const totalDisplacement = Math.abs(clampedVel) + Math.abs(pullY * 0.5);
+                const squishY = 1 + (totalDisplacement * 0.015);
                 const squishX = 1 / squishY;
                 const radius = f.baseR + Math.sin(time * 1.5 + idx) * 20;
 
@@ -1730,13 +1914,11 @@ html {
                 ctx.restore();
             });
 
-            // B) Physics Fluid Inertia for DOM Elements (Subtle viscous jelly lag)
-            // B) Physics Fluid Inertia for Background Floating Particles
-            if (Math.abs(clampedVel) > 0.05) {
-                // Apply liquid shift to particle nodes
+            // C) Background Floating Particles Shift
+            if (Math.abs(clampedVel) > 0.05 || Math.abs(pullY) > 0.05) {
                 particleNodes.forEach((p, i) => {
                     const depth = 0.4 + (i % 3) * 0.35;
-                    const shiftY = -clampedVel * depth * 1.8;
+                    const shiftY = (-clampedVel * depth * 1.8) + (pullY * depth * 1.15);
                     p.style.transform = `translate3d(0, ${shiftY.toFixed(2)}px, 0)`;
                 });
             } else {
