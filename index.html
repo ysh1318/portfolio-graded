@@ -80,22 +80,9 @@
             transition: opacity 0.3s ease;
         }
 
-        /* Elastic Fluid Pull-and-Stretch Styles */
-        #fluid-page-container {
+        /* Uniform Fluid Inertia for Content Cards */
+        .liquid-card {
             will-change: transform;
-            transform-origin: 50% 0;
-        }
-        #main-header {
-            will-change: transform;
-        }
-        body.is-fluid-pulling {
-            cursor: grabbing !important;
-            user-select: none !important;
-            -webkit-user-select: none !important;
-        }
-        body.is-fluid-pulling * {
-            user-select: none !important;
-            -webkit-user-select: none !important;
         }
 
         html {
@@ -1626,7 +1613,7 @@
 
 
     <!-- PRODUCTION GRADE DUAL-LAYER FLUID & LIQUID SCROLL PHYSICS ENGINE -->
-    <canvas id="liquid-physics-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:-5;opacity:0.75;mix-blend-mode:multiply;"></canvas>
+    <canvas id="liquid-physics-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:-5;opacity:0.85;"></canvas>
     
     <script>
     (function initProductionLiquidPhysics() {
@@ -1634,8 +1621,6 @@
             return;
         }
 
-        const container = document.getElementById('fluid-page-container');
-        const header = document.getElementById('main-header');
         const canvas = document.getElementById('liquid-physics-canvas');
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
@@ -1655,17 +1640,32 @@
         window.addEventListener('resize', resize, { passive: true });
         resize();
 
-        // 6 interconnected fluid metaball nodes with spring physics & viscosity
+        // -------------------------------------------------------------
+        // LAYER 1: TRUE HYDRODYNAMIC FLUID SIMULATION (WAVES + METABALLS)
+        // -------------------------------------------------------------
+
+        // 6 Viscous Fluid Droplets with Organic Surface Tension Harmonics
         const fluids = [
-            { rx: 0.18, ry: 0.22, baseR: 260, x: 0, y: 0, vx: 0, vy: 0, c1: '#FF7597', c2: 'rgba(195,163,250,0)', freq: 0.8 },
-            { rx: 0.82, ry: 0.28, baseR: 290, x: 0, y: 0, vx: 0, vy: 0, c1: '#74B9FF', c2: 'rgba(165,94,234,0)', freq: 1.1 },
-            { rx: 0.28, ry: 0.62, baseR: 310, x: 0, y: 0, vx: 0, vy: 0, c1: '#F3A8CD', c2: 'rgba(255,117,151,0)', freq: 0.9 },
-            { rx: 0.78, ry: 0.72, baseR: 340, x: 0, y: 0, vx: 0, vy: 0, c1: '#BACDF4', c2: 'rgba(192,132,252,0)', freq: 1.3 },
-            { rx: 0.50, ry: 0.45, baseR: 240, x: 0, y: 0, vx: 0, vy: 0, c1: '#A855F7', c2: 'rgba(116,185,255,0)', freq: 1.0 },
-            { rx: 0.88, ry: 0.90, baseR: 280, x: 0, y: 0, vx: 0, vy: 0, c1: '#FF769F', c2: 'rgba(243,168,205,0)', freq: 0.7 }
+            { rx: 0.18, ry: 0.22, baseR: 260, x: 0, y: 0, vx: 0, vy: 0, c1: 'rgba(255, 117, 151, 0.55)', c2: 'rgba(195, 163, 250, 0.22)', freq: 0.8 },
+            { rx: 0.82, ry: 0.28, baseR: 290, x: 0, y: 0, vx: 0, vy: 0, c1: 'rgba(116, 185, 255, 0.48)', c2: 'rgba(165, 94, 234, 0.20)', freq: 1.1 },
+            { rx: 0.28, ry: 0.62, baseR: 310, x: 0, y: 0, vx: 0, vy: 0, c1: 'rgba(243, 168, 205, 0.52)', c2: 'rgba(255, 117, 151, 0.20)', freq: 0.9 },
+            { rx: 0.78, ry: 0.72, baseR: 340, x: 0, y: 0, vx: 0, vy: 0, c1: 'rgba(186, 205, 244, 0.48)', c2: 'rgba(192, 132, 252, 0.18)', freq: 1.3 },
+            { rx: 0.50, ry: 0.45, baseR: 240, x: 0, y: 0, vx: 0, vy: 0, c1: 'rgba(168, 85, 247, 0.40)', c2: 'rgba(116, 185, 255, 0.16)', freq: 1.0 },
+            { rx: 0.88, ry: 0.90, baseR: 280, x: 0, y: 0, vx: 0, vy: 0, c1: 'rgba(255, 118, 159, 0.45)', c2: 'rgba(243, 168, 205, 0.18)', freq: 0.7 }
         ];
 
-        // Scroll Velocity State
+        // Interactive Mouse Hydrodynamic Wake
+        let mouseX = -1000;
+        let mouseY = -1000;
+        let mouseTargetX = -1000;
+        let mouseTargetY = -1000;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseTargetX = e.clientX;
+            mouseTargetY = e.clientY;
+        }, { passive: true });
+
+        // Scroll Velocity Tracker
         let lastScrollY = window.scrollY;
         let scrollVelocity = 0;
         let smoothedVelocity = 0;
@@ -1684,244 +1684,170 @@
         }, { passive: true });
 
         // -------------------------------------------------------------
-        // ELASTIC FLUID PULL & STRETCH INTERACTION ENGINE
+        // LAYER 2: UNIFORM FLUID INERTIA (NO TILT / NO SKEW) FOR CARDS
         // -------------------------------------------------------------
-        let pullY = 0;
-        let pullVelocity = 0;
-        let isPointerDown = false;
-        let startPointerY = 0;
-        let currentPointerY = 0;
-        let isDraggingPull = false;
-        let dragVelocity = 0;
-        let lastDragY = 0;
-        let lastDragTime = performance.now();
-
-        function isInteractive(el) {
-            if (!el) return false;
-            return !!el.closest('a, button, input, textarea, select, #section-nav, .nav-dot-row, label, [role="button"]');
-        }
-
-        // 1. Mouse Drag Pulling (Desktop)
-        window.addEventListener('mousedown', (e) => {
-            if (e.button !== 0) return;
-            if (isInteractive(e.target)) return;
-
-            isPointerDown = true;
-            startPointerY = e.clientY;
-            currentPointerY = e.clientY;
-            lastDragY = e.clientY;
-            lastDragTime = performance.now();
-            dragVelocity = 0;
-            isDraggingPull = false;
-        });
-
-        window.addEventListener('mousemove', (e) => {
-            if (!isPointerDown) return;
-            currentPointerY = e.clientY;
-            const dy = currentPointerY - startPointerY;
-
-            if (!isDraggingPull && Math.abs(dy) > 5) {
-                isDraggingPull = true;
-                document.body.classList.add('is-fluid-pulling');
-            }
-
-            if (isDraggingPull) {
-                const now = performance.now();
-                const dt = Math.max(now - lastDragTime, 10);
-                dragVelocity = ((currentPointerY - lastDragY) / dt) * 16;
-                lastDragY = currentPointerY;
-                lastDragTime = now;
-            }
-        });
-
-        function endPointerDrag() {
-            if (isPointerDown) {
-                isPointerDown = false;
-                if (isDraggingPull) {
-                    isDraggingPull = false;
-                    document.body.classList.remove('is-fluid-pulling');
-                    pullVelocity += dragVelocity * 0.45;
-                }
-            }
-        }
-
-        window.addEventListener('mouseup', endPointerDrag);
-        window.addEventListener('mouseleave', endPointerDrag);
-
-        // 2. Touch Drag Pulling (Mobile / Tablet)
-        window.addEventListener('touchstart', (e) => {
-            if (e.touches.length !== 1) return;
-            if (isInteractive(e.target)) return;
-            const touch = e.touches[0];
-            isPointerDown = true;
-            startPointerY = touch.clientY;
-            currentPointerY = touch.clientY;
-            lastDragY = touch.clientY;
-            lastDragTime = performance.now();
-            dragVelocity = 0;
-            isDraggingPull = false;
-        }, { passive: true });
-
-        window.addEventListener('touchmove', (e) => {
-            if (!isPointerDown || e.touches.length !== 1) return;
-            const touch = e.touches[0];
-            currentPointerY = touch.clientY;
-            const dy = currentPointerY - startPointerY;
-
-            const atTop = window.scrollY <= 1 && dy > 0;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const atBottom = window.scrollY >= maxScroll - 2 && dy < 0;
-
-            if (atTop || atBottom || Math.abs(dy) > 8) {
-                isDraggingPull = true;
-                const now = performance.now();
-                const dt = Math.max(now - lastDragTime, 10);
-                dragVelocity = ((currentPointerY - lastDragY) / dt) * 16;
-                lastDragY = currentPointerY;
-                lastDragTime = now;
-                if ((atTop || atBottom) && e.cancelable) {
-                    e.preventDefault();
-                }
-            }
-        }, { passive: false });
-
-        window.addEventListener('touchend', endPointerDrag, { passive: true });
-        window.addEventListener('touchcancel', endPointerDrag, { passive: true });
-
-        // 3. Wheel / Trackpad Overscroll Pulling (Edges)
-        window.addEventListener('wheel', (e) => {
-            const isAtTop = window.scrollY <= 1;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const isAtBottom = window.scrollY >= maxScroll - 2;
-
-            if (isAtTop && e.deltaY < 0) {
-                e.preventDefault();
-                pullVelocity += -e.deltaY * 0.16;
-            } else if (isAtBottom && e.deltaY > 0) {
-                e.preventDefault();
-                pullVelocity += -e.deltaY * 0.16;
-            } else if (Math.abs(pullY) > 4) {
-                pullVelocity += -e.deltaY * 0.08;
-            }
-        }, { passive: false });
-
-        // Background Particles
+        const cardNodes = Array.from(document.querySelectorAll('.liquid-card'));
         const particleNodes = Array.from(document.querySelectorAll('.liquid-particle'));
+
+        let uniformInertiaY = 0;
         let time = 0;
+
+        // Helper: Draw organic liquid droplet with undulating surface tension
+        function drawLiquidDroplet(f, idx, clampedVel) {
+            const waveX = Math.sin(time * f.freq + idx * 1.5) * 35;
+            const waveY = Math.cos(time * (f.freq * 0.85) + idx * 2.0) * 35;
+
+            // Target displacement responding to scroll inertia
+            let targetX = f.rx * width + waveX;
+            let targetY = f.ry * height + waveY - (clampedVel * (1.8 + idx * 0.35));
+
+            // Mouse repulsion wake (liquid moves away gently when cursor approaches)
+            const dx = targetX - mouseX;
+            const dy = targetY - mouseY;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 320 && dist > 1) {
+                const push = (1 - dist / 320) * 45;
+                targetX += (dx / dist) * push;
+                targetY += (dy / dist) * push;
+            }
+
+            // Spring physics (Hooke's law with viscous fluid damping)
+            const k = 0.045;
+            const d = 0.82;
+            const fx = (targetX - f.x) * k;
+            const fy = (targetY - f.y) * k;
+
+            f.vx = (f.vx + fx) * d;
+            f.vy = (f.vy + fy) * d;
+
+            f.x += f.vx;
+            f.y += f.vy;
+
+            // Hydrodynamic elongation (teardrop squish during scroll surge)
+            const squishY = 1 + (Math.abs(clampedVel) * 0.015);
+            const squishX = 1 / squishY;
+
+            ctx.save();
+            ctx.translate(f.x, f.y);
+            ctx.scale(squishX, squishY);
+
+            // Multiphase undulating liquid surface (16 radial harmonics)
+            const points = 16;
+            ctx.beginPath();
+            for (let i = 0; i <= points; i++) {
+                const theta = (i / points) * Math.PI * 2;
+                const h1 = Math.sin(theta * 2 + time * 1.5 + idx * 1.1) * (f.baseR * 0.08);
+                const h2 = Math.cos(theta * 3 - time * 1.1 + idx * 0.8) * (f.baseR * 0.05);
+                const h3 = Math.sin(theta * 4 + time * 2.2 + idx * 1.7) * (f.baseR * 0.03);
+                const r = f.baseR + h1 + h2 + h3 + Math.sin(time * 1.5 + idx) * 15;
+
+                const px = Math.cos(theta) * r;
+                const py = Math.sin(theta) * r;
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+
+            const grad = ctx.createRadialGradient(0, 0, f.baseR * 0.12, 0, 0, f.baseR * 1.1);
+            grad.addColorStop(0, f.c1);
+            grad.addColorStop(0.65, f.c2);
+            grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+            ctx.fillStyle = grad;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // Helper: Draw flowing hydrodynamic wave current
+        function drawFluidWave(yRatio, amp, freq, speed, phase, c1, c2, clampedVel) {
+            const yBase = yRatio * height;
+            const dynamicAmp = amp + Math.abs(clampedVel) * 0.65;
+            const waveSurge = -clampedVel * 1.2;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0, height);
+            ctx.lineTo(0, yBase);
+
+            const step = 32;
+            for (let x = 0; x <= width + step; x += step) {
+                // Wave ripple calculation
+                const w1 = Math.sin((x * freq) + (time * speed) + phase) * dynamicAmp;
+                const w2 = Math.cos((x * freq * 1.7) - (time * speed * 0.8) + phase) * (dynamicAmp * 0.4);
+                
+                // Cursor wave depression
+                let mouseRipple = 0;
+                const mDist = Math.abs(x - mouseX);
+                if (mDist < 250) {
+                    mouseRipple = Math.cos((mDist / 250) * Math.PI * 0.5) * 22;
+                }
+
+                const y = yBase + w1 + w2 + waveSurge + mouseRipple;
+                ctx.lineTo(x, y);
+            }
+
+            ctx.lineTo(width, height);
+            ctx.closePath();
+
+            const grad = ctx.createLinearGradient(0, yBase - dynamicAmp, width, yBase + dynamicAmp * 2);
+            grad.addColorStop(0, c1);
+            grad.addColorStop(1, c2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+            ctx.restore();
+        }
 
         function renderFrame() {
             time += 0.016;
 
-            // Scroll velocity damping
+            // Ease mouse position
+            mouseX += (mouseTargetX - mouseX) * 0.08;
+            mouseY += (mouseTargetY - mouseY) * 0.08;
+
+            // Fluid viscous drag & velocity decay
             scrollVelocity *= 0.88;
             smoothedVelocity += (scrollVelocity - smoothedVelocity) * 0.16;
-            const clampedVel = Math.max(Math.min(smoothedVelocity, 45), -45);
+            const clampedVel = Math.max(Math.min(smoothedVelocity, 40), -40);
 
-            // Elastic Pull & Stretch Physics Solver
-            if (isDraggingPull) {
-                const rawDy = currentPointerY - startPointerY;
-                const sign = Math.sign(rawDy);
-                const absDist = Math.abs(rawDy);
-                // Asymptotic rubber-band resistance curve
-                const maxPull = 190;
-                const targetPullY = sign * (maxPull * (1 - Math.exp(-absDist / 380)));
-                // Viscous follow
-                pullY += (targetPullY - pullY) * 0.32;
-            } else {
-                // Damped harmonic oscillator (spring back with organic jelly rebound)
-                const stiffness = 0.085;
-                const damping = 0.80;
-                const force = -stiffness * pullY;
-                pullVelocity = (pullVelocity + force) * damping;
-                pullY += pullVelocity;
-
-                if (Math.abs(pullY) < 0.04 && Math.abs(pullVelocity) < 0.04) {
-                    pullY = 0;
-                    pullVelocity = 0;
-                }
-            }
-
-            // A) Apply Elastic Pull & Stretch Transform to DOM
-            if (container) {
-                if (Math.abs(pullY) > 0.05) {
-                    const absPull = Math.abs(pullY);
-                    // Proportional stretch along pull direction (up to 16% extension)
-                    const stretchRatio = Math.min(absPull * 0.0012, 0.16);
-                    const scaleY = 1 + stretchRatio;
-                    // Volume preservation (Poisson's effect: subtle horizontal contraction)
-                    const scaleX = 1 / Math.sqrt(scaleY);
-
-                    // Dynamic transform anchor:
-                    // Pulling DOWN (pullY > 0) -> stretch anchored at top of current viewport
-                    // Pulling UP (pullY < 0) -> stretch anchored at bottom of current viewport
-                    const originY = pullY > 0 ? window.scrollY : (window.scrollY + window.innerHeight);
-                    container.style.transformOrigin = `50% ${originY.toFixed(1)}px`;
-                    container.style.transform = `translate3d(0, ${pullY.toFixed(2)}px, 0) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
-                } else {
-                    container.style.transform = '';
-                    container.style.transformOrigin = '';
-                }
-            }
-
-            if (header) {
-                if (Math.abs(pullY) > 0.05) {
-                    header.style.transform = `translate3d(0, ${(pullY * 0.35).toFixed(2)}px, 0)`;
-                } else {
-                    header.style.transform = '';
-                }
-            }
-
-            // B) Render Liquid Canvas Waves & Physics Reaction
+            // -------------------------------------------------------------
+            // A) RENDER FLUID CANVAS
+            // -------------------------------------------------------------
             ctx.clearRect(0, 0, width, height);
 
+            // 1. Flowing Hydrodynamic Wave Currents (Background Layers)
+            drawFluidWave(0.38, 42, 0.0022, 1.2, 0.0, 'rgba(255, 117, 151, 0.12)', 'rgba(195, 163, 250, 0.06)', clampedVel);
+            drawFluidWave(0.68, 50, 0.0018, 0.9, 2.2, 'rgba(116, 185, 255, 0.14)', 'rgba(168, 85, 247, 0.05)', clampedVel);
+            drawFluidWave(0.85, 38, 0.0025, 1.4, 4.1, 'rgba(243, 168, 205, 0.10)', 'rgba(186, 205, 244, 0.04)', clampedVel);
+
+            // 2. Viscous Organic Liquid Droplets
             fluids.forEach((f, idx) => {
-                const waveX = Math.sin(time * f.freq + idx * 1.5) * 35;
-                const waveY = Math.cos(time * (f.freq * 0.85) + idx * 2.0) * 35;
-
-                // Physics target reacts to both scroll velocity and elastic pull displacement
-                const targetX = f.rx * width + waveX;
-                const targetY = f.ry * height + waveY - (clampedVel * (1.8 + idx * 0.35)) + (pullY * (1.2 + idx * 0.22));
-
-                const k = 0.045;
-                const d = 0.82;
-                const fx = (targetX - f.x) * k;
-                const fy = (targetY - f.y) * k;
-
-                f.vx = (f.vx + fx) * d;
-                f.vy = (f.vy + fy) * d;
-
-                f.x += f.vx;
-                f.y += f.vy;
-
-                // Deform liquid drops during scroll surge and elastic pull
-                const totalDisplacement = Math.abs(clampedVel) + Math.abs(pullY * 0.5);
-                const squishY = 1 + (totalDisplacement * 0.015);
-                const squishX = 1 / squishY;
-                const radius = f.baseR + Math.sin(time * 1.5 + idx) * 20;
-
-                ctx.save();
-                ctx.translate(f.x, f.y);
-                ctx.scale(squishX, squishY);
-
-                const grad = ctx.createRadialGradient(0, 0, radius * 0.12, 0, 0, radius);
-                grad.addColorStop(0, f.c1);
-                grad.addColorStop(1, f.c2);
-
-                ctx.beginPath();
-                ctx.fillStyle = grad;
-                ctx.arc(0, 0, radius, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
+                drawLiquidDroplet(f, idx, clampedVel);
             });
 
-            // C) Background Floating Particles Shift
-            if (Math.abs(clampedVel) > 0.05 || Math.abs(pullY) > 0.05) {
+            // -------------------------------------------------------------
+            // B) UNIFORM FLUID INERTIA FOR CONTENT CARDS (NO TILT / NO SKEW)
+            // -------------------------------------------------------------
+            // Target displacement based strictly on scroll momentum
+            const targetDisplacement = -clampedVel * 0.40;
+            // Smooth spring damping for luscious liquid momentum
+            uniformInertiaY += (targetDisplacement - uniformInertiaY) * 0.22;
+
+            if (Math.abs(uniformInertiaY) > 0.05) {
+                // UNIFORM VERTICAL TRANSLATION ONLY - ZERO SKEW / ZERO TILT
+                cardNodes.forEach((card) => {
+                    card.style.transform = `translate3d(0, ${uniformInertiaY.toFixed(2)}px, 0)`;
+                });
+
+                // Fluid Depth Parallax for Background Particle Nodes
                 particleNodes.forEach((p, i) => {
                     const depth = 0.4 + (i % 3) * 0.35;
-                    const shiftY = (-clampedVel * depth * 1.8) + (pullY * depth * 1.15);
+                    const shiftY = -clampedVel * depth * 2.0;
                     p.style.transform = `translate3d(0, ${shiftY.toFixed(2)}px, 0)`;
                 });
             } else {
+                cardNodes.forEach((card) => {
+                    card.style.transform = '';
+                });
                 particleNodes.forEach((p) => {
                     p.style.transform = '';
                 });
