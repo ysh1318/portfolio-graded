@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - Scaler School of Technology</title>
+    <style>
+        body {
+            background-color: #f4f6f9;
+            color: #2d3748;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #ffffff;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1a365d;
+            margin: 0 0 10px 0;
+        }
+
+        nav a {
+            color: #2b6cb0;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        section {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            color: #2c5282;
+            border-bottom: 2px solid #ebf8ff;
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table, th, td {
+            border: 1px solid #cbd5e0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #ebf8ff;
+            color: #2b6cb0;
+        }
+
+        ul {
+            line-height: 1.8;
+        }
+
+        /* Class Selector required by Lab */
+        .highlight {
+            color: #276749;
+            font-weight: bold;
+        }
+
+        /* ID Selector required by Lab */
+        #student-name {
+            color: #1a365d;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        /* Bonus: Top Performer Badge */
+        .badge {
+            background-color: #c6f6d5;
+            color: #22543d;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 8px;
+            border: 1px solid #9ae6b4;
+            display: inline-block;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .radio-group label,
+        .checkbox-group label {
+            display: inline;
+            font-weight: normal;
+            margin-right: 15px;
+        }
+
+        .btn {
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btn-reset {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            margin-left: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #718096;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Student Portal</h1>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#profile">Profile</a>
+            <a href="#courses">Courses</a>
+            <a href="#register">Register</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Part 3: Student Profile -->
+        <section id="profile">
+            <h2>Student Profile</h2>
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td><span id="student-name">Yash Awachar</span> <span class="badge">Top Performer</span></td>
+                </tr>
+                <tr>
+                    <td>Student ID</td>
+                    <td>26SST101</td>
+                </tr>
+                <tr>
+                    <td>Program</td>
+                    <td><span class="highlight">Computer Science & Artificial Intelligence</span></td>
+                </tr>
+                <tr>
+                    <td>Year</td>
+                    <td>1st Year (Trimester 1)</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>yashawachar101@gmail.com</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Part 4: My Skills -->
+        <section id="skills">
+            <h2>My Skills</h2>
+            <p>Core technical foundations developed during my computer science journey:</p>
+            <ul>
+                <li>HTML & Semantic Markup</li>
+                <li>CSS & Box Model</li>
+                <li>Java (ICP - Object Oriented Programming)</li>
+                <li>Data Structures & Algorithms Foundations</li>
+                <li>Git & GitHub Version Control</li>
+                <li>Linux Command Line & Shell Scripting</li>
+            </ul>
+        </section>
+
+        <!-- Part 5: Weekly Schedule -->
+        <section id="courses">
+            <h2>Weekly Schedule</h2>
+            <table>
+                <tr>
+                    <th>Day</th>
+                    <th>9:00 AM</th>
+                    <th>11:00 AM</th>
+                    <th>2:00 PM</th>
+                </tr>
+                <tr>
+                    <td>Monday</td>
+                    <td>Intro to Programming (Java)</td>
+                    <td>Discrete Mathematics</td>
+                    <td>Programming Lab</td>
+                </tr>
+                <tr>
+                    <td>Tuesday</td>
+                    <td>Web Foundations (HTML & CSS)</td>
+                    <td>Linear Algebra</td>
+                    <td>CSS Layout Practice</td>
+                </tr>
+                <tr>
+                    <td>Wednesday</td>
+                    <td>Intro to Programming (Java)</td>
+                    <td>Discrete Mathematics</td>
+                    <td>DSA Problem Solving</td>
+                </tr>
+                <tr>
+                    <td>Thursday</td>
+                    <td>Web Foundations (HTML & CSS)</td>
+                    <td>Linear Algebra</td>
+                    <td>Mentorship & Coding Lab</td>
+                </tr>
+                <tr>
+                    <td>Friday</td>
+                    <td>DSA Problem Solving</td>
+                    <td>Shell Scripting & Git</td>
+                    <td>Builders Day Workshop</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Part 6: Course Registration Form -->
+        <section id="register">
+            <h2>Course Registration</h2>
+            <form action="#" method="get">
+                
+                <div class="form-group">
+                    <label for="student-fullname">Full Name:</label>
+                    <input type="text" id="student-fullname" name="fullname" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="student-email">Email Address:</label>
+                    <input type="email" id="student-email" name="email" required placeholder="you@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="student-id-field">Student ID:</label>
+                    <input type="text" id="student-id-field" name="student_id" required placeholder="e.g. 26SST101">
+                </div>
+
+                <div class="form-group">
+                    <label for="course-select">Course Selection:</label>
+                    <select id="course-select" name="course" required>
+                        <option value="">Select Course</option>
+                        <option value="html-css">HTML & CSS Foundations</option>
+                        <option value="java-dsa">Java & Data Structures (DSA)</option>
+                        <option value="javascript">JavaScript Fundamentals</option>
+                        <option value="dbms">Database Management Systems</option>
+                        <option value="ai-ml">Intro to AI & Machine Learning</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Preferred Learning Mode:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="mode-offline" name="mode" value="offline" checked>
+                        <label for="mode-offline">Offline (Campus)</label>
+
+                        <input type="radio" id="mode-online" name="mode" value="online">
+                        <label for="mode-online">Online</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Skills You Already Know:</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="skill-html" name="skills" value="html" checked>
+                        <label for="skill-html">HTML</label>
+
+                        <input type="checkbox" id="skill-css" name="skills" value="css" checked>
+                        <label for="skill-css">CSS</label>
+
+                        <input type="checkbox" id="skill-java" name="skills" value="java" checked>
+                        <label for="skill-java">Java</label>
+
+                        <input type="checkbox" id="skill-git" name="skills" value="git" checked>
+                        <label for="skill-git">Git</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn">Register Course</button>
+                    <button type="reset" class="btn btn-reset">Reset Form</button>
+                </div>
+
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Yash Awachar | Scaler School of Technology. Built with pure Semantic HTML & CSS.</p>
+    </footer>
+
+</body>
+</html>

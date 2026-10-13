@@ -1,0 +1,282 @@
+/* Flexbox Quest - Pure CSS Flexbox Styling */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Part 2: Game Header */
+.game-header {
+    background-color: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 18px 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.game-title {
+    font-size: 1.5rem;
+    color: #38bdf8;
+    letter-spacing: 1px;
+}
+
+.stats-bar {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.stat {
+    background-color: #0f172a;
+    border: 1px solid #475569;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.stat.score {
+    color: #facc15;
+    border-color: #ca8a04;
+}
+
+/* Part 4 & 5: Game Area */
+.game-area {
+    background: linear-gradient(180deg, #1e3a8a 0%, #0369a1 60%, #15803d 100%);
+    border: 3px solid #38bdf8;
+    border-radius: 12px;
+    height: 320px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sky-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-entity {
+    background-color: rgba(15, 23, 42, 0.8);
+    border: 2px solid #e2e8f0;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.player {
+    border-color: #38bdf8;
+    color: #bae6fd;
+}
+
+.star {
+    border-color: #facc15;
+    color: #fef08a;
+}
+
+.game-message {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid #facc15;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #fef08a;
+}
+
+.middle-platform-row {
+    display: flex;
+    justify-content: center;
+}
+
+.ground-platform-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.platform {
+    background-color: #854d0e;
+    border: 2px solid #ca8a04;
+    padding: 8px 24px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #fef08a;
+}
+
+/* Part 7, 8, 9: Game Panels */
+.game-panels {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+}
+
+.panel {
+    flex: 1;
+    background-color: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.panel h2 {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    border-bottom: 2px solid #334155;
+    padding-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+/* Panel 1: Controls */
+.d-pad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.d-pad-middle {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+}
+
+.ctrl-btn {
+    width: 44px;
+    height: 44px;
+    background-color: #334155;
+    color: white;
+    border: 2px solid #475569;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.ctrl-btn:hover {
+    background-color: #475569;
+}
+
+.jump-btn {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.jump-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* Panel 2: Inventory Items */
+.inventory-items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.item {
+    background-color: #0f172a;
+    border: 2px solid #475569;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.item:hover {
+    border-color: #38bdf8;
+}
+
+/* Panel 3: Quests */
+.quest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quest-item {
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quest-name {
+    font-size: 0.85rem;
+    color: #e2e8f0;
+}
+
+.quest-progress {
+    background-color: #334155;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+/* Footer */
+.game-footer {
+    text-align: center;
+    padding: 15px;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+/* Part 11: Responsive Design */
+@media (max-width: 768px) {
+    .game-panels {
+        flex-direction: column;
+    }
+
+    .game-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .stats-bar {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
